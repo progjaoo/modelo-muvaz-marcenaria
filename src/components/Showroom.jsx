@@ -1,74 +1,157 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 
-import { motion } from 'framer-motion';
+const showroomData = {
+  Cozinha: [
+    "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1556912177-c54030639a60?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1520699049698-acd2fccb8cc8?auto=format&fit=crop&w=800&q=80",
+  ],
+  Closet: [
+    "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1558997519-53bb99096983?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1616486332353-c9ffeb23d201?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&w=800&q=80",
+  ],
+  Sala: [
+    "https://images.unsplash.com/photo-1583847268964-b28dc2f51ec9?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1615876234886-fd9a39faa97f?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1631679706909-1844bbd07221?auto=format&fit=crop&w=800&q=80",
+  ],
+  Escritório: [
+    "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+  ],
+  "Área Gourmet": [
+    "https://images.unsplash.com/photo-1556912167-f556f1f39fdf?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1556912177-c54030639a60?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1534349735244-2ad058c2bc2b?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1542332213-31f87348057f?auto=format&fit=crop&w=800&q=80",
+  ],
+};
 
 const Showroom = () => {
-  const environments = [
-    {
-      title: "Cozinhas Planejadas",
-      category: "Luxo Integrado",
-      image: "https://images.unsplash.com/photo-1556912177-c54030639a60?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      title: "Dormitórios & Closets",
-      category: "Refúgio Pessoal",
-      image: "https://images.unsplash.com/photo-1505693413171-293669746a57?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      title: "Home Theaters",
-      category: "Entretenimento Imersivo",
-      image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      title: "Ambientes Corporativos",
-      category: "Prestigio Profissional",
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    }
-  ];
+  const categories = Object.keys(showroomData);
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   return (
-    <section id="ambientes" className="py-24 md:py-32 bg-luxury-offwhite">
+    <section id="ambientes" className="py-24 md:py-32 bg-white overflow-hidden">
       <div className="container mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-2xl">
-            <span className="text-xs tracking-[0.3em] uppercase text-luxury-gold mb-4 block">Portfólio</span>
-            <h2 className="text-4xl md:text-5xl font-serif text-luxury-graphite">Soluções para todos os ambientes do seu projeto.</h2>
-          </div>
-          <div className="hidden md:block">
-            <p className="text-luxury-graphite/60 font-light max-w-xs text-right">
-              Cada ambiente é planejado para maximizar a estética e a funcionalidade sem concessões.
-            </p>
-          </div>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-luxury-graphite tracking-tight mb-6 uppercase leading-tight max-w-4xl mx-auto"
+          >
+            Feitos sob medida para criar experiências únicas
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-luxury-graphite/60 font-light text-lg md:text-xl max-w-2xl mx-auto"
+          >
+            Ambientes que mostram a essência do design autoral. Cada espaço é pensado para refletir seu estilo e transmitir exclusividade.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {environments.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: index * 0.1 }}
-              className="relative group overflow-hidden aspect-[4/3]"
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-16">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`relative px-4 py-2 text-sm tracking-[0.2em] uppercase transition-all duration-300 ${
+                activeCategory === category ? 'text-luxury-gold' : 'text-luxury-graphite/40 hover:text-luxury-graphite'
+              }`}
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
-                style={{ backgroundImage: `url(${item.image})` }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-
-              <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
-                <span className="text-luxury-gold text-xs tracking-[0.2em] uppercase mb-2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  {item.category}
-                </span>
-                <h3 className="text-white text-2xl md:text-3xl font-serif translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                  {item.title}
-                </h3>
-                <div className="w-0 group-hover:w-16 h-[1px] bg-luxury-gold mt-4 transition-all duration-700" />
-              </div>
-            </motion.div>
+              {category}
+              {activeCategory === category && (
+                <motion.div
+                  layoutId="underline"
+                  className="absolute bottom-0 left-0 w-full h-[1px] bg-luxury-gold"
+                />
+              )}
+            </button>
           ))}
         </div>
+
+        {/* Image Grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+        >
+          <AnimatePresence mode="popLayout">
+            {showroomData[activeCategory].map((img, index) => (
+              <motion.div
+                key={`${activeCategory}-${index}`}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
+                onClick={() => setSelectedImage(img)}
+              >
+                <img
+                  src={img}
+                  alt={`${activeCategory} ${index + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button
+              className="absolute top-8 right-8 text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              src={selectedImage}
+              className="max-w-full max-h-full object-contain rounded-lg"
+              alt="Visualização ampliada"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
